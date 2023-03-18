@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:fitsSystemWindows="false">
+    tools:context=".Activities.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_main_screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/green_toolbar">
+        android:background="@color/green_toolbar"
+        >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Switcher App"
             android:layout_gravity="center"
             android:textColor="@color/white"

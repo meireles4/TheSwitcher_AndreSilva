@@ -1,12 +1,18 @@
-package com.example.theswitcher_andresilva
+package com.example.theswitcher_andresilva.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.theswitcher_andresilva.DivisionListClickInterface
+import com.example.theswitcher_andresilva.DivisionSwitchInterface
+import com.example.theswitcher_andresilva.DivisionsRVAdapter
+import com.example.theswitcher_andresilva.R
 import com.example.theswitcher_andresilva.db.Division
 import com.example.theswitcher_andresilva.viewModel.DivisionViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +26,8 @@ class MainActivity : AppCompatActivity(), DivisionListClickInterface, DivisionSw
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.green_toolbar)
 
         viewModel = ViewModelProvider (
             this,
