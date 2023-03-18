@@ -3,39 +3,48 @@ package com.example.theswitcher_andresilva
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.theswitcher_andresilva.repository.RoomRepository
+import com.example.theswitcher_andresilva.db.Division
+import com.example.theswitcher_andresilva.viewModel.DivisionViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DivisionListClickInterface, DivisionSwitchInterface {
 
-    private lateinit var roomRecyclerView: RecyclerView
+    lateinit var divisionsRV: RecyclerView
+    lateinit var viewModel: DivisionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startRecyclerView()
+        viewModel = ViewModelProvider (
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        ).get(DivisionViewModel::class.java)
+
+        divisionsRV = findViewById(R.id.rv_main_screen)
+        divisionsRV.layoutManager = LinearLayoutManager(this)
+        divisionsRV.setHasFixedSize(true)
+
+        val divisionAdapter = DivisionsRVAdapter(this, this)
+        divisionAdapter.updateList(viewModel.allDivisions)
+        divisionsRV.adapter = divisionAdapter
     }
 
-    private fun startRecyclerView() {
-        roomRecyclerView = findViewById(R.id.rv_main_screen)
-        roomRecyclerView.layoutManager = LinearLayoutManager(this)
-        roomRecyclerView.setHasFixedSize(true)
+    override fun onListItemClick(division: Division) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("name", division.divisionName)
+        intent.putExtra("lightStatus", division.lightStatus)
+        startActivity(intent)
+    }
 
-        val roomAdapter = RoomAdapter(RoomRepository.getAllRooms())
-        roomAdapter.onItemClick = {
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("name", it.name)
-            intent.putExtra("lightStatus", it.lightOn)
-            startActivity(intent)
+    override fun onSwitchClick(updatedDivision: Division) {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
+            viewModel.updateDivision(updatedDivision)
         }
-
-        roomAdapter.onSwitchClick = { room: Room, lightStatus: Boolean ->
-            val index = roomAdapter.roomList.indexOf(room)
-            roomAdapter.roomList[index].lightOn = lightStatus
-        }
-
-        roomRecyclerView.adapter = roomAdapter
     }
 }

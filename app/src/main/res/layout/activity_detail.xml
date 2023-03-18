@@ -41,7 +41,7 @@
             android:id="@+id/tv_tb_detail_screen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Room's Name"
+            android:text="Division's Name"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp"
