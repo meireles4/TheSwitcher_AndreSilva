@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".AddDivisionActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_detail_screen"
+        android:id="@+id/tb_add_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -15,20 +15,20 @@
         android:background="@color/green_toolbar">
 
         <LinearLayout
-            android:id="@+id/ll_back"
+            android:id="@+id/ll_back_button_add_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="16dp">
 
             <ImageView
-                android:id="@+id/iv_tb_back_arrow"
+                android:id="@+id/iv_tb_add_screen_back_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_action_back_arrow" />
 
             <TextView
-                android:id="@+id/tv_tb_back"
+                android:id="@+id/tv_tb_add_screen_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
@@ -38,53 +38,43 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_tb_detail_screen"
+            android:id="@+id/tv_tb_add_screen_detail_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Division's Name"
+            android:text="Add new division"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp"
             />
+
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/iv_light_state"
+    <EditText
+        android:id="@+id/et_add_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tb_detail_screen"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/light_off"
-        android:background="@color/grey_background_detail_screen"/>
-
-    <TextView
-        android:id="@+id/tv_detail_screen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Message with light state"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_light_state"
-        android:padding="10dp"/>
-
-    <TextView
-        android:id="@+id/tv_detail_screen_light_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="OFF"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_add_screen"
+        android:layout_margin="10dp"
+        android:singleLine="true"
+        android:maxLength="30"
+        />
+
+    <TextView
+        android:id="@+id/tv_add_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Enter your Division's Name"
+        app:layout_constraintTop_toBottomOf="@id/et_add_screen"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_detail_screen" />
+        android:layout_margin="10dp"/>
 
     <Button
-        android:id="@+id/bt_delete_division"
+        android:id="@+id/bt_add_division"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:text="Add"
         android:layout_margin="20dp"
         android:textAllCaps="false"
         android:textColor="@color/white"

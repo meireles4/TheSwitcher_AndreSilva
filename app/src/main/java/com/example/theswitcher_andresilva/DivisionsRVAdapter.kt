@@ -13,7 +13,7 @@ class DivisionsRVAdapter(
     private val divisionSwitchInterface: DivisionSwitchInterface
 ) : RecyclerView.Adapter<DivisionsRVAdapter.DivisionViewHolder>() {
 
-    private val allDivisions = ArrayList<Division>()
+    private var allDivisions = listOf<Division>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DivisionViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -24,6 +24,10 @@ class DivisionsRVAdapter(
     override fun onBindViewHolder(holder: DivisionViewHolder, position: Int) {
         val currentDivision = allDivisions[position]
         holder.divisionNameTextView.text = currentDivision.divisionName
+
+        //ensuring that each switch has its own listener instance
+        holder.divisionSwitch.setOnCheckedChangeListener(null)
+
         holder.divisionSwitch.isChecked = currentDivision.lightStatus
 
         holder.divisionNameTextView.setOnClickListener {
@@ -47,8 +51,7 @@ class DivisionsRVAdapter(
     }
 
     fun updateList(newList: List<Division>) {
-        allDivisions.clear()
-        allDivisions.addAll(newList)
+        allDivisions = newList
         notifyDataSetChanged()
     }
 }

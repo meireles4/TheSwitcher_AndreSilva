@@ -24,7 +24,8 @@
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_division_item"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_division_item" />
+        app:layout_constraintTop_toTopOf="@+id/tv_division_item"
+        android:track="@drawable/track"/>
 
     <View
         android:id="@+id/divider"

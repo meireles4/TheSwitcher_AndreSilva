@@ -1,20 +1,17 @@
-package com.example.theswitcher_andresilva.Activities
+package com.example.theswitcher_andresilva
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.theswitcher_andresilva.DivisionListClickInterface
-import com.example.theswitcher_andresilva.DivisionSwitchInterface
-import com.example.theswitcher_andresilva.DivisionsRVAdapter
-import com.example.theswitcher_andresilva.R
 import com.example.theswitcher_andresilva.db.Division
 import com.example.theswitcher_andresilva.viewModel.DivisionViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,6 +19,8 @@ class MainActivity : AppCompatActivity(), DivisionListClickInterface, DivisionSw
 
     lateinit var divisionsRV: RecyclerView
     lateinit var viewModel: DivisionViewModel
+    lateinit var addDivisionFB: FloatingActionButton
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +37,20 @@ class MainActivity : AppCompatActivity(), DivisionListClickInterface, DivisionSw
         divisionsRV.layoutManager = LinearLayoutManager(this)
         divisionsRV.setHasFixedSize(true)
 
-        val divisionAdapter = DivisionsRVAdapter(this, this)
-        divisionAdapter.updateList(viewModel.allDivisions)
-        divisionsRV.adapter = divisionAdapter
+        val divisionRVAdapter = DivisionsRVAdapter(this, this)
+        divisionsRV.adapter = divisionRVAdapter
+
+        //every time the list of divisions in the DB change, the observer listens to it
+        //update the RV adapter and the UI will change automatically
+        viewModel.allDivisions.observe(this) { list ->
+            divisionRVAdapter.updateList(list)
+        }
+
+        addDivisionFB = findViewById(R.id.fb_add)
+        addDivisionFB.setOnClickListener {
+            val intent = Intent(this, AddDivisionActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onListItemClick(division: Division) {
@@ -55,4 +65,15 @@ class MainActivity : AppCompatActivity(), DivisionListClickInterface, DivisionSw
             viewModel.updateDivision(updatedDivision)
         }
     }
+
+    override fun onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed()
+        } else {
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
+    }
+
+
 }

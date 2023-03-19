@@ -2,8 +2,10 @@ package com.example.theswitcher_andresilva.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.theswitcher_andresilva.db.Division
+import com.example.theswitcher_andresilva.db.DivisionDao
 import com.example.theswitcher_andresilva.db.DivisionDatabase
 import com.example.theswitcher_andresilva.repository.DivisionRepository
 import kotlinx.coroutines.Dispatchers
@@ -16,37 +18,19 @@ import kotlinx.coroutines.runBlocking
 
 class DivisionViewModel(application: Application) : AndroidViewModel(application){
 
-    lateinit var allDivisions: ArrayList<Division>
-    private val repository: DivisionRepository
+    private var dao: DivisionDao
+    private var repository: DivisionRepository
+    var allDivisions: LiveData<List<Division>>
 
     init {
-        val dao = DivisionDatabase.getInstance(application).getDivisionDao()
+        dao = DivisionDatabase.getInstance(application).getDivisionDao()
         repository = DivisionRepository(dao)
-
-        //use runBlocking to be able to call launch()
-        runBlocking {
-            launch(Dispatchers.IO){
-                allDivisions = repository.getAllDivisions() as ArrayList<Division>
-            }
-            //using delay to ensure Coroutine finishes before RVAdapter is created
-            // !! probably not a good solution !!
-            delay(100)
-        }
+        allDivisions = repository.allDivisions
     }
 
-    fun updateDivision (division: Division) {
-        //update DB
-        repository.update(division)
+    fun updateDivision (division: Division) = repository.update(division)
 
-        //update ViewModel
-        allDivisions = repository.getAllDivisions() as ArrayList<Division>
-    }
+    fun insertDivision (division: Division) = repository.insert(division)
 
-    fun insertDivision (division: Division) {
-        //update DB
-        repository.insert(division)
-
-        //update ViewModel
-        allDivisions = repository.getAllDivisions() as ArrayList<Division>
-    }
+    fun deleteDivision (division: Division) = repository.delete(division)
 }

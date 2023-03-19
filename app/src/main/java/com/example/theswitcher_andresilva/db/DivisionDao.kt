@@ -1,6 +1,8 @@
 package com.example.theswitcher_andresilva.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -10,7 +12,7 @@ import androidx.room.Update
 interface DivisionDao {
 
     @Query("Select * from divisionTable")
-    fun getAllDivisions(): List<Division>
+    fun getAllDivisions(): LiveData<List<Division>>
 
     @Update
     fun update(division: Division)
@@ -20,4 +22,7 @@ interface DivisionDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll (divisionList: List<Division>)
+
+    @Delete
+    fun delete(division: Division)
 }
